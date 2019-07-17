@@ -6,7 +6,8 @@ var CronJob = require('cron').CronJob;
   function init(){
     return nodemailer.createTestAccount().then(()=>{
         // create reusable transporter object using the default SMTP transport
-     
+        console.log("Uname  "+process.env.UNAME)
+        console.log("Pass "+process.env.PASSWORD)
         let  transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
