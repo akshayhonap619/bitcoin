@@ -1,13 +1,11 @@
 const nodemailer = require("nodemailer");
 const axios = require("axios")
 var CronJob = require('cron').CronJob;
-
+const express = require('express');
 
   function init(){
     return nodemailer.createTestAccount().then(()=>{
         // create reusable transporter object using the default SMTP transport
-        console.log("Uname  "+process.env.UNAME)
-        console.log("Pass "+process.env.PASSWORD)
         let  transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
@@ -67,8 +65,18 @@ const computeEverything=(transporter)=>{
 
 init().then(transporter=>{
   //computeEverything(transporter)
-  const job = new CronJob('0 * * * * *', function(){
+  const job = new CronJob('0 */10 * * * *', function(){
       computeEverything(transporter)
     }, null, true, 'America/New_York');
   job.start()
 })
+
+const app = express();
+
+app.get('/',(req,res)=>{
+  res.sendStatus(200);
+})
+
+const port = process.env.PORT || 3000;
+
+app.listen(port,()=>console.log("Server started on "))
