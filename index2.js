@@ -36,9 +36,5 @@ const sendEmail = (transporter, subject, text)=>{
 }
 
 init().then(transporter=>{
-    createJob('0 */30 * * * *',getRates,transporter).start()
+    createJob('0 * * * * *',getRates,transporter).start()
 })
-
-// const job = new CronJob('0 */1 * * * *', function(){
-//     computeEverything(transporter)
-//   }, null, true, 'America/New_York');
