@@ -36,5 +36,18 @@ const sendEmail = (transporter, subject, text)=>{
 }
 
 init().then(transporter=>{
-    createJob('0 * * * * *',getRates,transporter).start()
+    createJob('0 */30 * * * *',getRates,transporter).start()
 })
+
+
+//Express Bind
+const express = require('express');
+const app = express();
+
+app.get('/',(req,res)=>{
+   res.sendStatus(200);
+ })
+
+ const port = process.env.PORT || 3000;
+
+ app.listen(port,()=>console.log("Server started on "))
