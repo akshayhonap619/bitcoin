@@ -26,57 +26,59 @@ const express = require('express');
 
 }
 
-const getBTCRate=()=>{
-  return axios.get("https://api.coindesk.com/v1/bpi/currentprice/BTC.json").then(res=>{
-      const rate = res.data.bpi.USD.rate
-      return rate;
-  })
- }
+// const getBTCRate=()=>{
+//   return axios.get("https://api.coindesk.com/v1/bpi/currentprice/BTC.json").then(res=>{
+//       const rate = res.data.bpi.USD.rate
+//       return rate;
+//   })
+//  }
 
 
-const computeEverything=(transporter)=>{
-  getBTCRate().then(rate=>{
-    let totalVal =parseFloat(rate.replace(',','')) *7625 / 10968 ;
-    let profit = totalVal - 7625
-    let percentProfit = profit/7625 * 100;
+// const computeEverything=(transporter)=>{
+//   getBTCRate().then(rate=>{
+//     let totalVal =parseFloat(rate.replace(',','')) *7625 / 10968 ;
+//     let profit = totalVal - 7625
+//     let percentProfit = profit/7625 * 100;
 
- let mailOptions = {
-    from: process.env.UNAME, // sender address
-    to: "remindmemister@gmail.com", // list of receivers
-    subject: "BTC : "+rate, // Subject line
-    //html: "<b>Fat Fluffy</b>", // html body
-    text: `Profit = ${profit} \nTotal = ${totalVal} \n Percent Return = ${percentProfit} 
-    `
+//  let mailOptions = {
+//     from: process.env.UNAME, // sender address
+//     to: "remindmemister@gmail.com", // list of receivers
+//     subject: "BTC : "+rate, // Subject line
+//     //html: "<b>Fat Fluffy</b>", // html body
+//     text: `Profit = ${profit} \nTotal = ${totalVal} \n Percent Return = ${percentProfit} 
+//     `
     
-  };
+//   };
 
-    transporter.sendMail(mailOptions).then((info)=>{
-            console.log(info);
-  }).catch(err=>{
-    console.log(err)
-  })
-
-
-  })
-}
+//     transporter.sendMail(mailOptions).then((info)=>{
+//             console.log(info);
+//   }).catch(err=>{
+//     console.log(err)
+//   })
 
 
+//   })
+// }
 
 
-init().then(transporter=>{
-  //computeEverything(transporter)
-  const job = new CronJob('0 */10 * * * *', function(){
-      computeEverything(transporter)
-    }, null, true, 'America/New_York');
-  job.start()
-})
 
-const app = express();
 
-app.get('/',(req,res)=>{
-  res.sendStatus(200);
-})
+// init().then(transporter=>{
+//   //computeEverything(transporter)
+//   const job = new CronJob('0 */10 * * * *', function(){
+//       computeEverything(transporter)
+//     }, null, true, 'America/New_York');
+//   job.start()
+// })
 
-const port = process.env.PORT || 3000;
+// const app = express();
 
-app.listen(port,()=>console.log("Server started on "))
+// app.get('/',(req,res)=>{
+//   res.sendStatus(200);
+// })
+
+// const port = process.env.PORT || 3000;
+
+// app.listen(port,()=>console.log("Server started on "))
+
+ module.exports = {init}

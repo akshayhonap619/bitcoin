@@ -2,10 +2,10 @@
   "name": "bitcoin_alerting",
   "version": "1.0.0",
   "description": "Will send you the price of bitcoin after every specified interval",
-  "main": "index.js",
+  "main": "index2.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
+    "start": "node index2.js",
     "lint": "eslint . --fix"
   },
   "author": "Akshay H",
