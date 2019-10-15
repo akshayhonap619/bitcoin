@@ -2,6 +2,9 @@ const axios = require('axios')
 const {init} = require('./index')
 var CronJob = require('cron').CronJob;
 
+let DogeRate = undefined
+let ETCRate = undefined
+
 const getRates = async (transporter)=>{
     
     let url = `https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD`;
@@ -11,7 +14,11 @@ const getRates = async (transporter)=>{
      url = `https://min-api.cryptocompare.com/data/price?fsym=ETC&tsyms=USD`;
     const ETC = "ETC : "+await axios.get(url).then(response=> {return response.data.USD}
     )
-    await sendEmail(transporter,ETC + "  "+BTC,"")    
+
+    url = `https://min-api.cryptocompare.com/data/price?fsym=DOGE&tsyms=USD`;
+    const DOGE = "DOGE : "+await axios.get(url).then(response=> {return parseFloat(response.data.USD)*100 }
+    )
+    await sendEmail(transporter,ETC + "  "+BTC," "+DOGE)    
 }
 
 const createJob = (schedule,callback,transporter)=>{
@@ -23,8 +30,7 @@ const createJob = (schedule,callback,transporter)=>{
 const sendEmail = (transporter, subject, text)=>{
  let mailOptions = {
     from: process.env.UNAME, 
-    //to: "remindmemister@gmail.com",
-    to: ["remindmemister@gmail.com"],
+    to: [process.env.UNAME],
     subject,
     text
   };
@@ -47,6 +53,12 @@ const app = express();
 app.get('/',(req,res)=>{
    res.sendStatus(200);
  })
+
+app.get('/ETC/:rate',(req,res)=>{
+  const rate = req.params.rate
+  ETCRate = parseFloat(rate)
+  res.send(ETCRate+"" )
+})
 
  const port = process.env.PORT || 3000;
 
